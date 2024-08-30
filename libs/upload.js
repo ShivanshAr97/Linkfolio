@@ -1,5 +1,3 @@
-import toast from "react-hot-toast";
-
 export async function upload(ev, callbackFn) {
   const file = ev.target.files?.[0];
   console.log(file);
@@ -20,7 +18,6 @@ export async function upload(ev, callbackFn) {
 
       const a = await uploadPromise.json();
       console.log(a.url);
-      // Use the callback to pass the URL
       callbackFn(a.url);
     } catch (error) {
       console.error("Error during fetch:", error);

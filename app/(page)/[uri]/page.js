@@ -5,10 +5,10 @@ import mongoose from "mongoose";
 import { btoa } from "next/dist/compiled/@edge-runtime/primitives";
 import Image from "next/image";
 import Link from "next/link";
-import { QRCodeCanvas } from "qrcode.react";
 import { CiLink } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaShareAlt } from "react-icons/fa";
+import Share from "@/components/Share";
 
 function buttonLink(key, value) {
   if (key === "mobile") {
@@ -49,13 +49,14 @@ export default async function UserPage({ params }) {
 
   return (
     <div className="bg-white text-black min-h-screen">
-      <Link href={`${process.env.URL}`}><button className="fixed bottom-4 left-1/2 transform -translate-x-1/2 border border-black bg-blue-400 rounded-lg items-center justify-center z-10 p-2">
-        Try LinkFolio now!
-      </button></Link>
-      <button className="border flex gap-2  bg-blue-400 absolute top-60 left-[90%] rounded-lg items-center justify-center z-10 p-2">
-        <span>Share</span>
-        <FaShareAlt />
-      </button>
+      <Link href="/">
+        <button className="fixed bottom-4 left-1/2 transform -translate-x-1/2 border border-black bg-blue-400 rounded-lg items-center justify-center z-10 p-2">
+          Try LinkFolio now!
+        </button>
+      </Link>
+      <div className="border flex gap-2  bg-blue-400 absolute top-60 left-[87%] rounded-lg items-center justify-center z-10 p-2">
+        <span><Share user={page.uri}/></span>
+      </div>
       <div
         className="h-60 bg-gray-400 bg-cover bg-center -z-10 opacity-80"
         style={
@@ -73,7 +74,6 @@ export default async function UserPage({ params }) {
           height={256}
         />
       </div>
-      {/* <QRCodeCanvas value="https://reactjs.org/" /> */}
       <h2 className="text-2xl text-center mb-1">{page.displayName}</h2>
       <h3 className="text-md flex gap-2 justify-center items-center ">
         <span>{page.location}</span>
