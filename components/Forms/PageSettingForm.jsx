@@ -161,7 +161,7 @@ export default function PageSettingsForm({ page, user }) {
           </div>
 
           <div className="flex justify-center">
-            <SubmitButton className="bg-blue-600 w-fit text-white px-32 py-2 rounded-md shadow-md hover:bg-blue-700 transition">
+            <SubmitButton className="bg-blue-600 w-[20rem] text-white px-32 py-2 rounded-md shadow-md hover:bg-blue-700 transition">
               <span>Save</span>
             </SubmitButton>
           </div>

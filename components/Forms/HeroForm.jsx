@@ -25,11 +25,11 @@ const HeroForm = () => {
     }
   };
   return (
-    <div>
-      <form onSubmit={submitHandler}>
+    <div className="text-lg font-semibold">
+      <form className="flex items-center align-middle" onSubmit={submitHandler}>
         <span>linkfolio/</span>
         <input placeholder="username" type="text" name="" id="" />
-        <button type="submit">Join</button>
+        <button className="border bg-blue-700 text-white px-4 py-0.5 mx-4 rounded-md" type="submit">Join</button>
       </form>
     </div>
   );

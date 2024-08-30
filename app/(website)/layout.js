@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <section className="max-w-4xl mx-auto p-6">
+    <section className="mx-auto">
       <Header />
       {children}
       <Footer />

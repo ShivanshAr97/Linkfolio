@@ -8,6 +8,7 @@ import Link from "next/link";
 import { QRCodeCanvas } from "qrcode.react";
 import { CiLink } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
+import { FaShareAlt } from "react-icons/fa";
 
 function buttonLink(key, value) {
   if (key === "mobile") {
@@ -48,14 +49,15 @@ export default async function UserPage({ params }) {
 
   return (
     <div className="bg-white text-black min-h-screen">
-      <button className="border border-black bg-blue-400 rounded-lg items-center justify-center z-10 p-2">
+      <Link href={`${process.env.URL}`}><button className="fixed bottom-4 left-1/2 transform -translate-x-1/2 border border-black bg-blue-400 rounded-lg items-center justify-center z-10 p-2">
         Try LinkFolio now!
-      </button>
-      <button className="border border-black bg-blue-400 rounded-lg items-center justify-center z-10 p-2">
-        Share
+      </button></Link>
+      <button className="border flex gap-2  bg-blue-400 absolute top-60 left-[90%] rounded-lg items-center justify-center z-10 p-2">
+        <span>Share</span>
+        <FaShareAlt />
       </button>
       <div
-        className="h-60 bg-gray-400 bg-cover bg-center -mt-10 -z-10"
+        className="h-60 bg-gray-400 bg-cover bg-center -z-10 opacity-80"
         style={
           page.bgType === "color"
             ? { backgroundColor: page.bgColor }
@@ -76,7 +78,6 @@ export default async function UserPage({ params }) {
       <h3 className="text-md flex gap-2 justify-center items-center ">
         <span>{page.location}</span>
       </h3>
-      <div className="max-w-xs mx-auto text-center my-2">{`${process.env.URL}${page.uri}`}</div>
       <div className="max-w-xs mx-auto text-center my-2">{page.bio}</div>
       <div className="flex gap-2 justify-center mt-4 pb-4">
         {Object.keys(page.buttons).map((buttonKey) => (
@@ -114,7 +115,11 @@ export default async function UserPage({ params }) {
                     height={32}
                   />
                 )}
-                {!link.icon && <div><CiLink color="black" size="32px"/></div> }
+                {!link.icon && (
+                  <div>
+                    <CiLink color="black" size="32px" />
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex w-full items-center justify-between mx-4 shrink grow-0 overflow-hidden">

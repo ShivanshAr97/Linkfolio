@@ -12,7 +12,7 @@ const Header = async () => {
         <div className="text-2xl font-bold text-gray-800">
           <Link href={"/"}>LinkFolio</Link>
         </div>
-        <nav className="flex space-x-6 text-gray-600">
+        <nav className="flex  items-center align-middle space-x-6 text-gray-600">
           <Link href={"/about"} className="hover:text-gray-900 transition duration-300">About</Link>
           <Link href={"/contact"} className="hover:text-gray-900 transition duration-300">Contact</Link>
           {!session ? (
@@ -23,7 +23,7 @@ const Header = async () => {
           ) : (
             <>
               <Link href={"/account"} className="hover:text-gray-900 transition duration-300">
-                Hello, {session?.user?.name}
+                Hello, <span className="font-bold"> {session?.user?.name}</span>
               </Link>
               <Logout />
             </>
