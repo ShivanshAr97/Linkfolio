@@ -23,45 +23,33 @@ export default async function AnalyticsPage() {
     return redirect("/");
   }
   const page = await Page.findOne({ owner: session.user.email });
+  // console.log(page);
+  const groupedViews = await Event.find({ uri: page.uri });
+  // console.log(groupedViews);
 
-  const groupedViews = await Event.aggregate([
-    {
-      $match: {
-        type: "view",
-        uri: page.uri,
-      },
-    },
-    {
-      $group: {
-        _id: {
-          $dateToString: {
-            date: "$createdAt",
-            format: "%Y-%m-%d",
-          },
-        },
-        count: {
-          $count: {},
-        },
-      },
-    },
-    {
-      $sort: { _id: 1 },
-    },
-  ]);
+  const a = groupedViews.map((view) => ({
+    _id: view.date,
+    count: view.count,
+  }));
 
   const clicks = await Event.find({
     page: page.uri,
     type: "click",
   });
-  console.log(groupedViews);
-  console.log(clicks);
+  const b = clicks.map((view) => ({
+    _id: view.date,
+    count: view.count,
+    uri: view.uri,
+  }));
+
+  console.log(b);
 
   return (
     <div>
       <div className=" pb-4 m-6">
         <h2 className="text-2xl my-6 font-semibold text-center">Views</h2>
         <Chart
-          data={groupedViews.map((o) => ({
+          data={a.map((o) => ({
             date: o._id,
             views: o.count,
           }))}
@@ -88,11 +76,10 @@ export default async function AnalyticsPage() {
             <div className="text-center">
               <div className="border rounded-md p-2 mt-1 md:mt-0">
                 <div className="text-3xl">
-                  {
-                    clicks.filter(
-                      (c) => c.uri === link.url && isToday(c.createdAt)
-                    ).length
-                  }
+                  {b.filter(
+                      (c) => c.uri === link.key && isToday(new Date(c._id))
+                    )
+                    .reduce((total, current) => total + current.count, 0)}
                 </div>
                 <div className="text-gray-400 text-xs uppercase font-bold">
                   clicks today
@@ -102,7 +89,10 @@ export default async function AnalyticsPage() {
             <div className="text-center">
               <div className="border rounded-md p-2 mt-1 md:mt-0">
                 <div className="text-3xl">
-                  {clicks.filter((c) => c.uri === link.url).length}
+                  {b.filter(
+                      (c) => c.uri === link.key
+                    )
+                    .reduce((total, current) => total + current.count, 0)}
                 </div>
                 <div className="text-gray-400 text-xs uppercase font-bold">
                   clicks total

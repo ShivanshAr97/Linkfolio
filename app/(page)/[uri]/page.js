@@ -9,6 +9,7 @@ import { CiLink } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaShareAlt } from "react-icons/fa";
 import Share from "@/components/Share";
+import LinkClick from "@/components/LinkClick";
 
 function buttonLink(key, value) {
   if (key === "mobile") {
@@ -45,7 +46,18 @@ export default async function UserPage({ params }) {
     );
   }
 
-  await Event.create({ uri: uri, page: uri, type: "view" });
+  // await Event.create({ uri: uri, page: uri, type: "view" });
+
+  const today = new Date();
+  const dateString = today.toISOString().split("T")[0];
+  console.log(dateString);
+
+  // Increment the count for today's date
+  await Event.updateOne(
+    { uri: uri, page: uri, type: "view", date: dateString }, // Filter by URI, page, type, and date
+    { $inc: { count: 1 } }, // Increment the count field by 1
+    { upsert: true } // Create the document if it doesn't exist
+  );
 
   return (
     <div className="bg-white text-black min-h-screen">
@@ -55,7 +67,9 @@ export default async function UserPage({ params }) {
         </button>
       </Link>
       <div className="border flex gap-2  bg-blue-400 absolute top-60 left-[87%] rounded-lg items-center justify-center z-10 p-2">
-        <span><Share user={page.uri}/></span>
+        <span>
+          <Share user={page.uri} />
+        </span>
       </div>
       <div
         className="h-60 bg-gray-400 bg-cover bg-center -z-10 opacity-80"
@@ -90,45 +104,7 @@ export default async function UserPage({ params }) {
       </div>
       <div className="max-w-2xl mx-auto text-white p-2 px-8">
         {page.links.map((link) => (
-          <Link
-            ping={
-              process.env.URL +
-              "api/click?url=" +
-              btoa(link.url) +
-              "&page=" +
-              page.uri
-            }
-            key={link.url}
-            target="_blank"
-            className="bg-indigo-800 rounded-md m-4 flex"
-            href={link.url}
-          >
-            <div className="relative -left-4 overflow-hidden w-16">
-              <div className="w-12 h-12 bottom-2 right-2 p-2 bg-white rounded-full shadow-md cursor-pointer">
-                {/* <div className="w-12 h-12 rounded-full border bg-blue-700 relative flex items-center justify-center"> */}
-                {link.icon && (
-                  <Image
-                    className="w-full h-full object-cover"
-                    src={link.icon}
-                    alt={"icon"}
-                    width={32}
-                    height={32}
-                  />
-                )}
-                {!link.icon && (
-                  <div>
-                    <CiLink color="black" size="32px" />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex w-full items-center justify-between mx-4 shrink grow-0 overflow-hidden">
-              <h3 className="text-xl">{link.title}</h3>
-              <button>
-                <CiCirclePlus size="20px" />
-              </button>
-            </div>
-          </Link>
+          <LinkClick link={link} page={page}/>
         ))}
       </div>
     </div>
