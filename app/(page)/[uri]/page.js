@@ -34,10 +34,8 @@ export default async function UserPage({ params }) {
     );
   }
 
-  // Find the user by email
   const user = await User.findOne({ email: page.owner });
 
-  // Handle case where the user is not found
   if (!user) {
     return (
       <div className="bg-white text-black min-h-screen flex items-center justify-center">
@@ -52,11 +50,10 @@ export default async function UserPage({ params }) {
   const dateString = today.toISOString().split("T")[0];
   console.log(dateString);
 
-  // Increment the count for today's date
   await Event.updateOne(
-    { uri: uri, page: uri, type: "view", date: dateString }, // Filter by URI, page, type, and date
-    { $inc: { count: 1 } }, // Increment the count field by 1
-    { upsert: true } // Create the document if it doesn't exist
+    { uri: uri, page: uri, type: "view", date: dateString },
+    { $inc: { count: 1 } },
+    { upsert: true }
   );
 
   return (
@@ -103,8 +100,11 @@ export default async function UserPage({ params }) {
         ))}
       </div>
       <div className="max-w-2xl mx-auto text-white p-2 px-8">
-        {page.links.map((link) => (
+        {/* {page.links.map((link) => (
           <LinkClick link={link} page={page}/>
+        ))} */}
+        {page.links.map((link, index) => (
+          <LinkClick key={index} link={link} page={page} />
         ))}
       </div>
     </div>
